@@ -1,0 +1,21 @@
+from brand import RestaurantScraper
+import asyncio
+
+async def resturant_links() -> list:
+    scraper = RestaurantScraper()
+    resturantList = []
+
+    await scraper.initialize("https://www.nutritionix.com/brands/restaurant")
+    num = await scraper.get_number_of_pages()
+    
+    for i in range(1, num + 1):
+        links = await scraper.scrape_links(i)
+        for link in links:
+            resturantList.append(link)
+
+    await scraper.close_browser()
+    return resturantList
+
+if __name__ == '__main__':
+    resturantLinks = asyncio.run(resturant_links())
+    
